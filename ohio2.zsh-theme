@@ -5,7 +5,7 @@ function git_prompt_info() {
 function get_pwd() {
   echo "${PWD/$HOME/~}"
 }
-PROMPT="{$fg[yellow]%T-%D$reset_color} $fg[red]%n $reset_color% on $fg[green]%m$reset_color: $fg[cyan]%$(get_pwd) ${git_prompt_info}
+PROMPT="{$fg[yellow]%T-%D$reset_color} $fg[red]%n $reset_color% on $fg[green]%m$reset_color: $fg[cyan]%$(get_pwd) 
 $reset_color===> %
 %"
 PROMPT+="$(git_prompt_info)"
