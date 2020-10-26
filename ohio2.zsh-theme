@@ -1,16 +1,28 @@
-function git_prompt_info() {
-  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-  echo "$ZSH_THEME_GIT_PROMPT_PREFIX$(current_branch)$ZSH_THEME_GIT_PROMPT_SUFFIX$(parse_git_dirty)"
-}
-function get_pwd() {
-  echo "${PWD/$HOME/~}"
-}
-PROMPT="{$fg[yellow]%T-%D$reset_color} $fg[red]%n $reset_color% on $fg[green]%m$reset_color: $fg[cyan]%$(get_pwd) 
-$reset_color===> %
-%"
-PROMPT+="$(git_prompt_info)"
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}git:%{$fg[magenta]%}"
+# Personalized!
+
+# Grab the current date (%D) and time (%T) wrapped in {}: {%D %T}
+DALLAS_CURRENT_TIME_="%{$fg[white]%}{%{$fg[yellow]%}%D-%T%{$fg[white]%}}%{$reset_color%}"
+# Grab the current machine name: muscato
+DALLAS_CURRENT_MACH_="%{$fg[green]%}%m%{$fg[white]%}:%{$reset_color%}"
+# Grab the current filepath, use shortcuts: ~/Desktop
+# Append the current git branch, if in a git repository: ~aw@master
+DALLAS_CURRENT_LOCA_="%{$fg[cyan]%}%~\$(git_prompt_info)%{$reset_color%}\$(parse_git_dirty)"
+# Grab the current username: dallas
+DALLAS_CURRENT_USER_="%{$fg[red]%}%n%{$reset_color%}"
+# Use a % for normal users and a # for privelaged (root) users.
+DALLAS_PROMPT_CHAR_="%{$fg[white]%}===> %(%%!.#.%%)%{$reset_color%}"
+# For the git prompt, use a white @ and blue text for the branch name
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[white]%}@%{$fg[blue]%}"
+# Close it all off by resetting the color and styles.
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%$fg[yellow]% edited!"
-ZSH_THEME_GIT_PROMPT_CLEAN=" "
-##this was based on the stock theme but idc
+# Do nothing if the branch is clean (no changes).
+ZSH_THEME_GIT_PROMPT_CLEAN=""
+# Add 3 cyan x's if this branch is diiirrrty! Dirty branch!
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[yellow]%} x "
+
+ZSH_THEME_RUBY_PROMPT_PREFIX="%{$fg[white]%}[%{$fg[magenta]%}"
+ZSH_THEME_RUBY_PROMPT_SUFFIX="%{$fg[white]%}]%{$reset_color%}"
+
+# Put it all together!
+PROMPT="$DALLAS_CURRENT_TIME_\$(ruby_prompt_info) $DALLAS_CURRENT_USER_ on $DALLAS_CURRENT_MACH_$DALLAS_CURRENT_LOCA_ 
+$DALLAS_PROMPT_CHAR_ "
